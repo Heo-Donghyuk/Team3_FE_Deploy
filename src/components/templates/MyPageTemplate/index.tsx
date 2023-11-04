@@ -12,13 +12,35 @@ import { MutateOptions, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { MdCameraAlt, MdCheck, MdClose, MdStar } from "react-icons/md";
 
+// POC : Proof of Concept
+// - Next13 -> SSR -> SEO
+// - 렌더링이 빨라 진다 등등
+
+// Goal -> URL -> Document (Navigate Request) -> "HTML 내용이 들어가있는 상태가 된다."
+
+// Page 컴포넌트에서 prefetchQuery 사용해서 서버사이드에서 API 콜을 할 수 있는가?
+/*
+- QueryClient를 일치시켜줌 (getQueryClient)
+- prefetchState를 가져와서 UserMineApi로부터 districtId를 가져옴
+- cities/district API를 prefetchQuery로 가져옴
+- 결과적으로 서버에서만 API 콜을 했고, 클라이언트에서는 캐시된 데이터를 가져옴
+-> 그럼에도 서버 사이드 렌더링이 안 되었음
+
+layout.tsx에서 RecoilProvider와 QueryProvider를 제거하니 서버 사이드 렌더링이 되었음
+-> Recoil을 Next 13과 사용하는 것이 가능한가?
+-> React Query를 서버사이드 렌더링 시키려면 어떻게 해야 하는가?
+-> QueryClient 선언시 React cache를 제거했더니 서버사이드 렌더링에 성공
+
+서버 사이드 API 콜이 실패했을때, 어떻게 fallback UI를 보여줄 수 있을까?
+- Goal : 서버 사이드 API 콜을 실패시키고, suspense를 사용해서 loading.tsx를 보여주는 것
+*/
+
 function MyPageTemplate() {
   const { data: profileData } = useQuery(["/api/users/mine"], getMyProfile, { suspense: true });
   const response = profileData?.data?.response;
-  const { name, email, verification, averageScore, rating, districtId, profileImage } = response;
+  const { name, email, verification, averageScore, rating, districtId, profileImage } = response || {};
   const { data: regionData } = useQuery([`/api/cities/districts/${districtId}`], () => getAllRegions(districtId), {
-    suspense: true,
-    staleTime: Infinity,
+    enabled: !!districtId,
   });
   const cityId = regionData?.data?.response?.cityId;
   const countryId = regionData?.data?.response?.countryId;
@@ -107,7 +129,7 @@ function MyPageTemplate() {
         </div>
         <div className="region flex flex-col gap-4">
           <h2 className="text-xl">지역</h2>
-          <DropdownBox selectedOptionIds={regionIds} setSelectedOptionIds={setRegionIds} styleType="small" />
+          {/* <DropdownBox selectedOptionIds={regionIds} setSelectedOptionIds={setRegionIds} styleType="small" /> */}
         </div>
         <div className="profile-image flex flex-col gap-4">
           <h2 className="text-xl">프로필 이미지</h2>
