@@ -36,7 +36,7 @@ COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/static ./.next/stat
 # #COPY --from=builder /app/public ./public
 COPY --from=builder /usr/src/app/next.config.js ./next.config.js
 COPY --from=builder /usr/src/app/package.json ./package.json
-RUN chown -R nextjs:nodejs ./.next
+RUN chown -R nextjs:nodejs /usr/src/app/.next
 # COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/standalone ./
 # COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/static ./.next/static
 # COPY --from=builder /usr/src/app/node_modules/next/dist/compiled/jest-worker ./node_modules/next/dist/compiled/jest-worker
