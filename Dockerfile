@@ -7,11 +7,11 @@ WORKDIR /usr/src/app
 
 COPY . .
 RUN npm install
-RUN npm build
+RUN npm run build
 ENV NEXT_PUBLIC_API_URL https://ka02fa9a0d9a2a.user-app.krampoline.com
 ENV NEXT_PUBLIC_KAKAOMAP_APPKEY 3b5893ebb985d9c035b14cc31922553f
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
 
 
 # # Install dependencies based on the preferred package manager
