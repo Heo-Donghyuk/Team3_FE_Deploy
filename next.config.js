@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    loader: 'imgix',
     remotePatterns: [
       {
         protocol: "https",
