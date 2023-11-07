@@ -30,7 +30,7 @@ RUN chown nextjs:nodejs .next
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/next.config.js ./
-COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/standalone ./
+# COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/static ./.next/static
 # # 이미지 깨짐 오류
 # COPY --from=builder /usr/src/app/next.config.js ./
