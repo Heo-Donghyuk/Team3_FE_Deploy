@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    loader: "custom",
-    loaderFile: "./src/utils/imageLoader.ts",
+    // loader: "custom",
+    // loaderFile: "./src/utils/imageLoader.ts",
     remotePatterns: [
       {
         protocol: "https",
